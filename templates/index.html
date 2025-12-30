@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart Home Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+  
 </head>
 <body>
 
@@ -31,11 +33,16 @@
 
     <!-- Calendar Content -->
     <section class="calendar">
-        <section>THIS IS calendar</section>
+      <button id="login-btn">Login with Google</button>
+      <div id="button-container"></div>
+      <div id="calendar-container"></div>
     </section>
   </main>
 
-   <!-- Script js -->
+  <!-- Script js -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://apis.google.com/js/api.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

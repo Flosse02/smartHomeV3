@@ -1,9 +1,20 @@
 from flask import Flask, render_template, jsonify, send_from_directory
+from dotenv import load_dotenv
 import os
 
+load_dotenv()  
 app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGE_FOLDER = os.path.join(BASE_DIR, "static/media/images")  # adjust if needed
+CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+API_KEY = os.getenv("GOOGLE_API_KEY")
+
+@app.route("/config")
+def config():
+    return jsonify({
+        "client_id": CLIENT_ID,
+        "api_key": API_KEY
+    })
 
 @app.route("/")
 def index():

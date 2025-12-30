@@ -91,6 +91,7 @@ function gisLoaded() {
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
     callback: (tokenResponse) => {
       loadCalendarEvents();
+      startCalendarAutoRefresh(5);
     },
   });
 
@@ -127,29 +128,47 @@ window.addEventListener('load', () => {
     if (typeof gapiLoaded === 'function') gapiLoaded();
 });
 
-let calendar; // global variable
+let calendar; 
 
 function renderEvents(events) {
   const calendarEl = document.getElementById('calendar-container');
 
-  // Transform events into FullCalendar format
   const fcEvents = events.map(e => ({
     title: e.summary,
     start: e.start.dateTime || e.start.date,
     end: e.end?.dateTime || e.end?.date
   }));
 
-  // If calendar already exists, remove it first
   if (calendar) {
     calendar.destroy();
   }
 
-  // Initialize FullCalendar
   calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     events: fcEvents,
-    height: 'auto'
+    height: '100%',
+    counterHeight: '100%'
   });
 
   calendar.render();
 }
+
+// Refresh calendar events periodically
+function startCalendarAutoRefresh(intervalMinutes = 5) {
+  setInterval(() => {
+    if (gapiInited && localStorage.getItem('google_access_token')) {
+      loadCalendarEvents();
+    }
+  }, intervalMinutes * 60 * 1000);
+}
+
+function requestAccessTokenSilently() {
+  tokenClient.requestAccessToken({ prompt: '' }); // silent request
+}
+
+// call every 50 minutes
+setInterval(() => {
+  if (localStorage.getItem('google_access_token')) {
+    requestAccessTokenSilently();
+  }
+}, 50 * 60 * 1000);

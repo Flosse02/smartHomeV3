@@ -1,0 +1,51 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: sans-serif;
+}
+
+.top-bar {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background: #111;
+  color: white;
+}
+
+.status span {
+  margin-right: 16px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  color: white;
+  margin-left: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Main Layout */
+.main {
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs-content {
+  flex: 1;
+  background: #1e1e1e;
+}
+
+.calendar {
+  flex: 1;
+  background: #2a2a2a;
+}

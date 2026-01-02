@@ -1,5 +1,6 @@
 import { gapiLoaded, gisLoaded, setGoogleCredentials } from "./calendar.js";
 import { startSlideshow } from "./photos.js";
+import { updateWeather } from "./weather.js";
 import { updateDateTime } from "./dateTime.js";
 
 /* Initilse Application */
@@ -8,6 +9,7 @@ async function initApp() {
     await loadGoogleConfig();
     initTabs();
     initClock();
+    initWeather();
   } catch (err) {
     console.error("App failed to initialise:", err);
   }
@@ -78,6 +80,12 @@ function initClock() {
   setInterval(updateDateTime, 30_000);
 }
 
+
+function initWeather() {
+  let elTemp = document.getElementById('temp');
+  updateWeather(elTemp);
+  setInterval(updateWeather, 5*60000);
+}
 /* Start App */
 
 document.addEventListener("DOMContentLoaded", initApp);

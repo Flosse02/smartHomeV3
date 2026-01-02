@@ -5,10 +5,12 @@ let initialised = false;
 
 let GOOGLE_CLIENT_ID;
 let GOOGLE_API_KEY;
+let EMAIL;
 
-export function setGoogleCredentials(clientId, apiKey) {
+export function setGoogleCredentials(clientId, apiKey, email) {
   GOOGLE_CLIENT_ID = clientId;
   GOOGLE_API_KEY = apiKey;
+  EMAIL = email;
 }
 
 // Load GAPI client (for Calendar API)
@@ -32,6 +34,7 @@ export function gisLoaded() {
     client_id: GOOGLE_CLIENT_ID,
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
     callback: (tokenResponse) => {
+      localStorage.setItem("google_access_token", tokenResponse.access_token);
       loadCalendarEvents();
       startCalendarAutoRefresh(5);
     },
@@ -103,7 +106,7 @@ function startCalendarAutoRefresh(intervalMinutes = 5) {
 }
 
 function requestAccessTokenSilently() {
-  tokenClient.requestAccessToken({ prompt: '' }); // silent request
+  tokenClient.requestAccessToken({ prompt: ''}); // silent request
 }
 
 // call every 50 minutes
@@ -112,3 +115,23 @@ setInterval(() => {
     requestAccessTokenSilently();
   }
 }, 50 * 60 * 1000);
+
+export function trySilentLogin() {
+  if (!tokenClient) return;
+
+  tokenClient.requestAccessToken({
+    prompt: '',
+    hint: EMAIL,
+    callback: (tokenResponse) => {
+      const loginBtn = document.getElementById("login-btn");
+      if (!tokenResponse?.access_token) {
+        loginBtn.style.display = "block";
+        return;
+      }
+
+      loginBtn.style.display = "none";
+      localStorage.setItem("google_access_token", tokenResponse.access_token);
+      loadCalendarEvents();
+    }
+  });
+}

@@ -1,4 +1,4 @@
-import { gapiLoaded, gisLoaded, setGoogleCredentials } from "./calendar.js";
+import { gapiLoaded, gisLoaded, setGoogleCredentials, trySilentLogin } from "./calendar.js";
 import { startSlideshow } from "./photos.js";
 import { updateWeather } from "./weather.js";
 import { updateDateTime } from "./dateTime.js";
@@ -16,12 +16,11 @@ async function initApp() {
 }
 
 /* Google Calendar Start */
-
 async function loadGoogleConfig() {
   const res = await fetch("/config");
   const config = await res.json();
 
-  setGoogleCredentials(config.client_id, config.api_key);
+  setGoogleCredentials(config.client_id, config.api_key, config.email);
 
   await Promise.all([
     waitForGlobal("gapi"),
@@ -30,6 +29,7 @@ async function loadGoogleConfig() {
 
   gapiLoaded();
   gisLoaded();
+  trySilentLogin();
 }
 
 /* UI Setup */

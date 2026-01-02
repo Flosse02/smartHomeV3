@@ -52,7 +52,7 @@ async function loadCalendarEvents() {
     timeMin: new Date().toISOString(),
     showDeleted: false,
     singleEvents: true,
-    maxResults: 10,
+    maxResults: 100,
     orderBy: 'startTime'
   });
 

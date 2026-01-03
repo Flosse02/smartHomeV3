@@ -73,3 +73,58 @@ html, body {
     padding: 10px;
     border-bottom: 1px solid #ccc;
 }
+
+/* Split screen */
+.music-container {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.music-pane, .right-pane {
+  width: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Tabs */
+.music-bar {
+  display: flex;
+  margin-bottom: 10px;
+  gap: 5px;
+}
+
+.tab {
+  flex: 1;
+  padding: 5px;
+  cursor: pointer;
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+}
+
+.tab.active {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+/* List */
+.music-list-container ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.music-list-container li {
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.music-list-container li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Right pane */
+#player {
+  text-align: center;
+}

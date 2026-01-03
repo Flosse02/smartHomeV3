@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Home Music Tab</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <header>
-        <h1>My Music Library</h1>
-    </header>
-    <main>
-        <div id="music-container">
-            Loading music...
+<div id="music-container">
+    <div class="music-pane">
+        <div class="music-bar">
+            <button class="tab active" data-tab="artists">Artists</button>
+            <button class="tab" data-tab="albums">Albums</button>
+            <button class="tab" data-tab="songs">Songs</button>
         </div>
-    </main>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+        <div class="music-list-container" id="music-list">Loading Music...</div>
+    </div>
+    <aside class="music-player"> 
+        <div id="player">
+            <p>Select a song to play</p>
+            <audio id="audio-player" controls></audio>
+        </div>
+    </aside>
+</div>

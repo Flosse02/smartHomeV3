@@ -2,6 +2,7 @@ import { gapiLoaded, gisLoaded, setGoogleCredentials, trySilentLogin } from "./c
 import { startSlideshow } from "./photos.js";
 import { updateWeather } from "./weather.js";
 import { updateDateTime } from "./dateTime.js";
+import { initMusic } from "./music.js";
 
 /* Initilse Application */
 async function initApp() {
@@ -56,6 +57,9 @@ async function loadTab(tabName) {
     if (tabName === "photos") {
       startSlideshow();
     }
+    else if (tabName === "music") {
+      initMusic();
+    }
   } catch (err) {
     document.getElementById("content").innerHTML = "<p>Failed to load tab.</p>";
     console.error(err);
@@ -86,6 +90,6 @@ function initWeather() {
   updateWeather(elTemp);
   setInterval(updateWeather, 5*60000);
 }
-/* Start App */
 
+/* Start App */
 document.addEventListener("DOMContentLoaded", initApp);

@@ -1,11 +1,11 @@
-from flask import Flask, render_template, jsonify, send_from_directory
+from flask import Flask, render_template, jsonify, send_from_directory, redirect, request
 from dotenv import load_dotenv
 import os, requests, subprocess, json
 
 load_dotenv()  
 app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-IMAGE_FOLDER = os.path.join(BASE_DIR, "static/media/images")  # adjust if needed
+IMAGE_FOLDER = os.path.join(BASE_DIR, "static/media/images")
 CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 API_KEY = os.getenv("GOOGLE_API_KEY")
 
@@ -53,7 +53,7 @@ def loginAndGetMusic():
         data = response.json()
     except Exception as e:
         print("JSON PARSE ERROR:", e)
-        data = {"Items": []}  # fallback so Flask won't crash
+        data = {"Items": []}
 
     return data.get("Items", [])
 
@@ -66,9 +66,9 @@ def music():
         artist = item['Artists'][0] if item['Artists'] else "Unknown Artist"
         album = item.get('Album', 'Unknown Album')
         songData = {
-            "id": item['Id'],
-            "title": item['Name', 'Unknown Title'],
-            "duration": int(item['RunTimeTicks', 0] / 10_000_000)
+            "id": item.get('Id', None),
+            "title": item.get('Name', 'Unknown Title'),
+            "duration": int(item.get('RunTimeTicks', 0) / 10_000_000)
         }
 
         if artist not in musicDict:
@@ -79,7 +79,12 @@ def music():
 
     return jsonify(musicDict)
 
-
+@app.route("/stream/<songId>")
+def streamSong(songId):
+    JELLYFIN_URL = os.getenv("JELLYFIN_URL")
+    JELLYFIN_API_KEY = os.getenv("JELLYFIN_API_KEY")
+    url = f"{JELLYFIN_URL}/Audio/{songId}/stream?static=true&api_key={JELLYFIN_API_KEY}"
+    return redirect(url)
 
 if __name__ == "__main__":
      app.run(host="127.0.0.1", port=5000, debug=True)
